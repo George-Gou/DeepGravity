@@ -1,7 +1,3 @@
-# -- coding : utf-8 --
-# @Time:2022/1/22 17:41
-# @Author: Jianing Gou(goujianing19@mails.ucas.ac.cn)
-
 # coding=utf-8
 import pandas as pd
 import sys
@@ -15,27 +11,11 @@ from tqdm import tqdm
 
 warnings.filterwarnings('ignore')
 import pickle
-# <editable>
-# 在此处添加算法描述
-# </editable>
-# conn：             数据库连接
-# inputs：           输入数据集合，数据类型：list， 存储组件输入节点对应的数据，
-#                    通过输入节点的key获取数据，例如配置的key为“input1”, 那么inputs$input1
-#                    即为该节点对应的数据表
-# params：           参数集合，数据类型：list， 存储，获取的规则与inputs一致。需要注意的是：
-#                    params中参数的值都是字符类型的，需要在代码中进行数据类型转换，比如：
-#                    as.integer(params$centers)
-# outputs：          存储规则参见inputs
-# reportFileName：   算法运行报告文件的存储路径
-# 返回值(可选)：     如果函数用于训练模型，则必须返回模型对象
 
-# <editable>
 import datetime
-
 import pandas as pd
 import numpy as np
 import datetime as dt
-import pysolid
 from scipy.fft import fft
 from scipy import signal
 import multiprocessing.dummy as mp
@@ -43,16 +23,8 @@ import scipy.signal as sg
 from datetime import datetime, timedelta
 
 import earthtide
-
-
-def dump_pickle(obj, file_name):
-    with open('tmp/' + file_name + '.pkl', 'wb') as f:
-        pickle.dump(obj, f, pickle.HIGHEST_PROTOCOL)
-
-
-def load_pickle(file_name):
-    with open('tmp/' + file_name + '.pkl', 'rb') as f:
-        return pickle.load(f)
+__all__ = ['calculate_julian_century', 'solve_longman_tide', 'solve_longman_tide_scalar',
+           'solve_tide_df', 'solve_point_corr']
 
 
 def get_yesterday():
@@ -323,7 +295,6 @@ def dowmsample(tag, origin_data_df, code_p, code_g, q_list, n=8, ftype='iir', ze
         })
     # 返回dataframe
     dowmsample_result = pd.DataFrame(result_dict)
-    dump_pickle(dowmsample_result, str(tag) + '_重力与大气压输入数据')
     return dowmsample_result
 
 
@@ -368,4 +339,3 @@ for date, origin_data_group in tqdm(origin_data_df.groupby(['year', 'month', 'da
         # TODO 保存数据
         result_list.append(i)
 result_df = pd.DataFrame(result_list)
-dump_pickle(result_df, '最终结果')
